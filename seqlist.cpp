@@ -151,6 +151,19 @@ void deleteV_seq_pro(PSeqList palist, Datatype key)
     palist->n = k;
 }
 
+void reverSeq(PSeqList palist)
+{
+    int i;
+    Datatype tmp;
+    for(i=0; i<palist->n/2; i++)
+    {
+        tmp = palist->element[palist->n-1];
+        palist->element[palist->n-1]=palist->element[i];
+        palist->element[i]=tmp;
+        palist->n-1;
+    }
+}
+
 int main()
 {
     int m;
@@ -203,6 +216,10 @@ int main()
     cin>>data_delete;
     // deleteV_seq(palist, data_delete);
     deleteV_seq(palist, data_delete);
+    showSeq(palist);
+
+    cout<<"Reverse list:\n";
+    reverSeq(palist);
     showSeq(palist);
 
     return 0;
