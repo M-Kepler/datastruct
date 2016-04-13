@@ -3,14 +3,17 @@
 * EMail        : hellohuangjinjie@gmail.com
 * Last modified: 2016-04-08 08:00:23
 * Filename     : sort.cpp
-* Description  : test_file
+* Description  : still 不完美
+
+排序：
+    blog.csdn.net/hguisu/article/details/7776068
+非常详细
+    blog.csdn.net/jnu_simba/article/details/9705111
+    blog.csdn.net/xiazdong/article/details/8462393#t6
+gif图:
+    blog.jobbole.com/11745
 **********************************************************/
 
-/*============================================================================
-排序：
-http://blog.csdn.net/hguisu/article/details/7776068
-非常详细http://blog.csdn.net/jnu_simba/article/details/9705111
-============================================================================*/
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
