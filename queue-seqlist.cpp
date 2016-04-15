@@ -1,3 +1,11 @@
+/***********************************************************
+* Author       : M_Kepler
+* EMail        : hellohuangjinjie@gmail.com
+* Last modified: 2016-04-15 19:17:25
+* Filename     : queue-seqlist.cpp
+* Description  : test_file
+**********************************************************/
+
 #include <iostream>
 #include <malloc.h>
 #define MAXNUM 9999

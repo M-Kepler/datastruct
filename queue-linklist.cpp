@@ -1,3 +1,11 @@
+/***********************************************************
+* Author       : M_Kepler
+* EMail        : hellohuangjinjie@gmail.com
+* Last modified: 2016-04-15 19:18:01
+* Filename     : queue-linklist.cpp
+* Description  :
+**********************************************************/
+
 #include <iostream>
 #include <malloc.h>
 using namespace std;
