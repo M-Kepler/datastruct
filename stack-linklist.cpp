@@ -98,8 +98,8 @@ int main()
     cout<<"output\n";
     while(t)
     {
-        cout<<getTop(plstack)<<" ";
-        pop(plstack);
+        get_pop(plstack);
+        cout<<" ";
         t--;
     }
     return 0;

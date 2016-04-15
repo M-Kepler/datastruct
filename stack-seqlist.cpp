@@ -46,6 +46,15 @@ DataType top_seq( PSeqStack pastack ) {
     return (pastack->s[pastack->t]);
 }
 
+void showStack_seq(PSeqStack pastack)
+{
+    while(pastack->t != -1)
+    {
+        cout<<top_seq(pastack)<<" ";
+        pop_seq(pastack);
+    }
+}
+
 int main()
 {
     int n,t;
@@ -53,18 +62,14 @@ int main()
     cout<<"please input stack length:\n";
     cin>>n;
     t=n;
-    PSeqStack psstack = createEmptyStack_seq();
+    PSeqStack pastack = createEmptyStack_seq();
     while(n)
     {
         cin>>item;
-        push_seq(psstack,item);
+        push_seq(pastack,item);
         n--;
     }
-    while(t)
-    {
-        cout<<top_seq(psstack)<<" ";
-        pop_seq(psstack);
-        t--;
-    }
+    showStack_seq(pastack);
+
     return 0;
 }
