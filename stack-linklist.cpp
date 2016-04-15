@@ -1,3 +1,16 @@
+/***********************************************************
+* Author       : M_Kepler
+* EMail        : hellohuangjinjie@gmail.com
+* Last modified: 2016-04-15 22:51:00
+* Filename     : stack-linklist.cpp
+* Description  :
+    * 图解看我博客
+    * 入栈的新节点 p 的指针域top的位置:p->link = plstack->top
+        * 然后再把top指向新节点 p: plstack->top = p
+    * 出栈,修改一下top然后释放空间: plstack->top = plstack->top->link
+**********************************************************/
+
+
 #include <malloc.h>
 #include <iostream>
 using namespace std;
@@ -30,14 +43,26 @@ int isEmpty(PLinkStack plstack)
     return plstack ->top ==NULL;
 }
 
+/*
+top --->[data]-[link] 栈顶
+                 ↓
+        [data]-[link]
+                 .
+                 .
+                 .
+                 ↓
+        [data]-[null] 栈底
+*/
 void push(PLinkStack plstack,DataType x)
 {
     PNode p = (PNode) malloc (sizeof (struct Node));
     if(p!= NULL)
     {
         p ->data = x;
-        p ->link = plstack -> top; //新元素的指针域指向栈顶元素。
-        plstack -> top = p; //新加入的元素作为栈顶。
+        //新元素的指针域指向栈顶元素。
+        p ->link = plstack -> top;
+        //新加入的元素作为栈顶。
+        plstack -> top = p;
     }
     else
         cout<<"Out of space\n";
@@ -49,7 +74,8 @@ void pop(PLinkStack  plstack)
     if (p!= NULL)
     {
         p = plstack -> top;
-        plstack ->top = plstack -> top -> link; //栈顶元素的下一个元素作为新的栈顶。
+        plstack ->top = plstack -> top -> link;
+        //栈顶元素的下一个元素作为新的栈顶。
         free(p);
     }
     else
