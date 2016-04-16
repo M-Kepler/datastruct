@@ -3,7 +3,14 @@
 * EMail        : hellohuangjinjie@gmail.com
 * Last modified: 2016-04-15 19:18:01
 * Filename     : queue-linklist.cpp
-* Description  :
+* Description  : 队列的链式表示
+    * 与queue-seqlist不同的是：
+        * r指向当前队定,而顺序队列中是指向下一个入队位置
+        * f指向当前队低
+    * 入队出队
+        * 在queue-seqlist中不必考虑第一个入队的元素
+        * 要是不考虑是不是第一个元素的话，由于r是指向当前队定
+        * 而入队p将被放在plqueue->r->link的位置，既NULL
 **********************************************************/
 
 #include <iostream>
@@ -51,17 +58,15 @@ void enQueue( PLinkQueue plqueue, DataType x)
     {
         p->data = x;
         p->link = NULL;
-
+        //第一个元素的话
         if(plqueue ->f == NULL)
             plqueue->f = p;
         else
             plqueue ->r -> link = p;
-
         plqueue->r =p;
     }
     else
         printf("Out of space\n");
-
 }
 
 void deQueue(PLinkQueue plqueue)
