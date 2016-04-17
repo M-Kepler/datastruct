@@ -1,9 +1,12 @@
 /***********************************************************
 * Author       : M_Kepler
 * EMail        : hellohuangjinjie@gmail.com
-* Last modified: 2016-04-15 21:08:37
+* Last modified: 2016-04-17 22:05:55
 * Filename     : tree-pro.cpp
 * Description  :
+*
+https://blog.csdn.net/luckyxiaoqiang/article/details/7518888
+
    层数(深度)高度:从0开始（2^0)
    七大性质：
    非空二叉树第i层结点最多为2^i 个结点
@@ -11,7 +14,7 @@
    n0 = n2 + 1
 
    完全二叉树：
-   叶子只出现在最后两层，最后一层结点都分布在左边
+   叶子只可能出现在最后两层，最后一层结点都分布在左边
    深度：log2(n) n 为结点数
 
    满二叉树：
@@ -403,7 +406,7 @@ void LevelOrder(BiTree T){
 int main()
 {
 
-    //测试：ABC##DE#G##F###     124##57##8##3#6##       
+    //测试：ABC##DE#G##F###     124##57##8##3#6##
 
     BiTree T;
     cout<<"请输入二叉树创建方式     1：先序，2：层次"<<endl;
@@ -414,62 +417,64 @@ int main()
             CreateBiTree(T);
             break;
         case(2):
-            T = createBiTree( );    //Test case: ebfad.g..c#
+            //Test case: ebfad.g..c#
+            T = createBiTree( );
             break;
     }
-    printf("先序遍历：\n");
+    printf("1. 先序遍历：\n");
     PreOrder(T);
     printf("\n");
 
-    printf("先序遍历(非递归)：\n");
+    printf("2. 先序遍历(非递归)：\n");
     PreOrder2(T);
     printf("\n");
 
-    printf("中序遍历：\n");
+    printf("3. 中序遍历：\n");
     InOrder(T);
     printf("\n");
 
-    printf("中序遍历(非递归)：\n");
+    printf("4. 中序遍历(非递归)：\n");
     InOrder2(T);
     printf("\n");
 
-    printf("后序遍历：\n");
+    printf("5. 后序遍历：\n");
     PostOrder(T);
     printf("\n");
 
-    printf("后序遍历(非递归)：\n");
+    printf("6. 后序遍历(非递归)：\n");
     PostOrder2(T);
     printf("\n");
 
-    printf("层次遍历：\n");
+    printf("7. 层次遍历：\n");
     LevelOrder(T);
     printf("\n");
 
-    cout<<endl<<"树的高度为："<<BinTreeDepth(T)<<endl<<endl;
+    cout<<endl<<"8. 树的高/深度为："<<BinTreeDepth(T)<<endl<<endl;
 
     cout<<"结点数"<<getNodeNum(T)<<endl<<endl;
 
-    cout<<"求二叉树第K层的节点个数"<<endl;
-    int k;  cin>>k;
+    cout<<"9. 求二叉树第K层的节点个数"<<endl;
+    int k;
+    cin>>k;
     cout<<"个数为"<<endl<<GetNodeNumKthLevel(T,k)<<endl<<endl;
 
-    cout<<"二叉树中叶子节点的个数\n";
+    cout<<"10. 二叉树中叶子节点的个数\n";
     cout<<endl<<GetLeafNodeNum(T)<<endl<<endl;
 
     int maxLeft = 0;
     int maxRight = 0;
-    cout<<"二叉树中节点的最大距离\n";
+    cout<<"11. 二叉树中节点的最大距离\n";
     cout<<GetMaxDistance(T, maxLeft, maxRight)<<endl<<endl;
 
-    cout<<"两结点最低公共祖先\n";
+    cout<<"12. 两结点最低公共祖先\n";
     DateType A,B;
-    cin>>A>>B;
+    // cin>>A>>B;
     cout<<GetLastCommonParent(T,A,B)<<endl;
 
     int height = 0;
-    cout<<"判断二叉树是不是平衡二叉树\n"<<isAVL(T,height)<<endl<<endl;
+    cout<<"13. 判断二叉树是不是平衡二叉树\n"<<isAVL(T,height)<<endl<<endl;
 
-    cout <<"释放树空间"<<endl<<endl;
+    cout <<"14. 释放树空间"<<endl<<endl;
     DestroyBinTree(T);
 
     return 0;
