@@ -1,33 +1,14 @@
 /***********************************************************
 * Author       : M_Kepler
 * EMail        : hellohuangjinjie@gmail.com
-* Last modified: 2016-04-17 22:05:55
-* Filename     : tree-pro.cpp
+* Last modified: 2016-04-20 20:10:52
+* Filename     : tree.cpp
 * Description  :
-*
-https://blog.csdn.net/luckyxiaoqiang/article/details/7518888
-
-   层数(深度)高度:从0开始（2^0)
-   七大性质：
-   非空二叉树第i层结点最多为2^i 个结点
-   高度为 K 的二叉树中，最多有 2^(k+1) - 1 个结点
-   n0 = n2 + 1
-
-   完全二叉树：
-   叶子只可能出现在最后两层，最后一层结点都分布在左边
-   深度：log2(n) n 为结点数
-
-   满二叉树：
-   度数只可能是 n0、n2
-   深度为 k 的完全二叉树去掉第K层就变为满二叉树了
-
-   扩充二叉树：
-   添加外层结点，把原树中的结点的度数都补为2
-   外部结点个数 N 内部结点个数 n     N - n = 1
-   外部路径 E 内部路径 I             E - I = 2n
-
-   度数 + 1 = 结点数
-
+    * https://blog.csdn.net/luckyxiaoqiang/article/details/7518888
+    * ./tree.md
+    * 需要了解在二叉树里怎么使用递归,只要把树根栽进入就行，注意在程序
+        * 里要有跳出递归的语句,一般都是Tree不空就递归
+    * 创建:
 **********************************************************/
 
 #include <iostream>
@@ -39,8 +20,8 @@ https://blog.csdn.net/luckyxiaoqiang/article/details/7518888
 #define maxsize 100
 using namespace std;
 
-//二叉树结点
-typedef int DateType;
+//二叉树结点(链式存储)
+typedef char DateType;
 typedef struct BiTNode{
     DateType data;
     struct BiTNode *lchild,*rchild;
@@ -48,7 +29,7 @@ typedef struct BiTNode{
 
 //按先序序列创建二叉树
 int CreateBiTree(BiTree &T){
-    char data;
+    DateType data;
     //‘#’表示空树
     cin>>data;
     if(data == '#'){
@@ -63,10 +44,8 @@ int CreateBiTree(BiTree &T){
     return 0;
 }
 
-
 //层次创建二叉树
-BiTree createBiTree()
-{
+BiTree createBiTree() {
     char ch;
     BiTNode*Q[maxsize];
     int front,rear;
@@ -99,7 +78,7 @@ BiTree createBiTree()
 }
 
 //访问结点
-void Visit(BiTree T){
+void Visit(BiTree T) {
     if(T->data != '#'){
         printf("%c ",T->data);
     }
@@ -108,84 +87,69 @@ void Visit(BiTree T){
 //先序遍历
 void PreOrder(BiTree T){
     if(T != NULL){
-        //访问根节点
         Visit(T);
-        //访问左子结点
         PreOrder(T->lchild);
-        //访问右子结点
         PreOrder(T->rchild);
     }
 }
+
 //中序遍历
 void InOrder(BiTree T){
     if(T != NULL){
-        //访问左子结点
         InOrder(T->lchild);
-        //访问根节点
         Visit(T);
-        //访问右子结点
         InOrder(T->rchild);
     }
 }
+
 //后序遍历
 void PostOrder(BiTree T){
     if(T != NULL){
-        //访问左子结点
         PostOrder(T->lchild);
-        //访问右子结点
         PostOrder(T->rchild);
-        //访问根节点
         Visit(T);
     }
 }
 
-
 //树的高度
-int BinTreeDepth(BiTree t)
-{
-    //Depth(t)= max( Depth(lchild),Depth(rchild) ) + 1
+//Depth(t)= max( Depth(lchild),Depth(rchild) ) + 1
+int BinTreeDepth(BiTree t) {
     int h,h1,h2;
-    if(t == NULL)   return 0;
+    if(t == NULL)
+        return 0;
     else
     {
         h1 = BinTreeDepth(t->lchild);
         h2 = BinTreeDepth(t->rchild);
+        // 当递归到最后一个结点，h1h2都为0,所以，只要有一个结点高度都为１
         h = max(h1,h2) + 1;
         return h;
     }
-
 }
 
-
 //求树的结点数
-int getNodeNum(BiTree t)
-{
-    //树的结点数=左子树 + 右子树 + 1；
-    if(t == NULL) return 0;
+//NodeNum=左子树 + 右子树 + 1；
+int getNodeNum(BiTree t) {
+    if(t == NULL)
+        return 0;
     return (getNodeNum(t->lchild)+getNodeNum(t->rchild)+1);
 }
 
-
 //求二叉树第K层的节点个数
-int GetNodeNumKthLevel(BiTree t, int k)
-{
-    //NodeNum(t,k) = NodeNum(t->lchild,k-1)+NodeNum(t->rchild,k-1)
+//NodeNum(t,k) = NodeNum(t->lchild,k-1)+NodeNum(t->rchild,k-1)
+int GetNodeNumKthLevel(BiTree t, int k) {
     if(t == NULL || k < 1)
         return 0;
     if(k == 1)
         return 1;
-    // 左子树中k-1层的节点个数
     int numLeft = GetNodeNumKthLevel(t->lchild, k-1);
-    // 右子树中k-1层的节点个数
     int numRight = GetNodeNumKthLevel(t->rchild, k-1);
     return (numLeft + numRight);
 }
 
-
 //求二叉树中叶子节点的个数
-int GetLeafNodeNum(BiTree t)
-{
-    //左右儿子为NULL    则：LeafNum(t) = LeafNum(t->lchild) + LeafNum(t->rchild);
+//左右儿子为NULL 则：LeafNum(t) = LeafNum(t->lchild) + LeafNum(t->rchild);
+int GetLeafNodeNum(BiTree t) {
     if(t == NULL)
         return 0;
     if(t->lchild ==NULL && t->rchild ==NULL)
@@ -195,11 +159,26 @@ int GetLeafNodeNum(BiTree t)
     return (numleft + numright);
 }
 
+//输出叶子结点
+// if(t->lchild==NULL && t->rchild==NULL)
+void displayLeaf(BiTree t) {
+    if(t!=NULL) {
+        if(t->lchild==NULL && t->rchild==NULL) {
+            cout<<t->data<<" ";
+        }
+        else{
+            displayLeaf(t->lchild);
+            displayLeaf(t->rchild);
+        }
+    }
+}
 
-//求二叉树中节点的最大距离
+// *求二叉树中节点的最大距离
 int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight)
 {
-    //MaxDistance(t->lchild)    //MacDistance(t->rchild)    //MaxLeft(t->lchild)+MaxRight(t->rchild)
+    //MaxDistance(t->lchild)
+    //MacDistance(t->rchild)
+    //MaxLeft(t->lchild)+MaxRight(t->rchild)
     // maxLeft,maxRight 左/右 子树中的节点距离根节点的最远距离
     if(t == NULL)
     {
@@ -213,35 +192,29 @@ int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight)
     {
         maxDistLeft = GetMaxDistance(t->lchild, maxLL, maxLR);
         maxLeft = max(maxLL, maxLR) + 1;
-    }
-    else
-    {
+    } else {
         maxDistLeft = 0;
         maxLeft = 0;
     }
+
     if(t->rchild != NULL)
     {
         maxDistRight = GetMaxDistance(t->rchild, maxRL, maxRR);
         maxRight = max(maxRL, maxRR) + 1;
-    }
-    else
-    {
+    } else {
         maxDistRight = 0;
         maxRight = 0;
     }
+
     return max(max(maxDistLeft, maxDistRight), maxLeft+maxRight);
 }
 
 
-//两结点最低公共祖先
-DateType GetLastCommonParent(BiTree t, DateType x, DateType y)
-{
-
+// *两结点最低公共祖先
+DateType GetLastCommonParent(BiTree t, DateType x, DateType y) {
+    //如果两个节点分别在根节点的左子树和右子树，则返回根节点
+    //如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
 }
-//如果两个节点分别在根节点的左子树和右子树，则返回根节点
-//如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
-//求最近公共祖先：
-
 
 //判断二叉树是不是平衡二叉树
 bool isAVL(BiTree t, int & height)
@@ -280,7 +253,6 @@ void DestroyBinTree(BiTree t)
     t->rchild = NULL;
     free( t );
 }
-
 
 //先序遍历(非递归)
 void PreOrder2(BiTree T){
@@ -375,7 +347,6 @@ void PostOrder2(BiTree T){
     }//while
 }
 
-
 //层次遍历
 void LevelOrder(BiTree T){
     BiTree p = T;
@@ -406,10 +377,9 @@ void LevelOrder(BiTree T){
 int main()
 {
 
-    //测试：ABC##DE#G##F###     124##57##8##3#6##
-
     BiTree T;
     cout<<"请输入二叉树创建方式     1：先序，2：层次"<<endl;
+    cout<<"A B D # # # C E # G # # F H # # I # #\n";
     int a;  cin>>a;
     switch(a){
         case(1):
@@ -461,26 +431,31 @@ int main()
     cout<<"10. 二叉树中叶子节点的个数\n";
     cout<<endl<<GetLeafNodeNum(T)<<endl<<endl;
 
+    cout<<"11. 输出二叉树中叶子节点\n";
+    displayLeaf(T);
+    cout<<endl;
+
     int maxLeft = 0;
     int maxRight = 0;
-    cout<<"11. 二叉树中节点的最大距离\n";
+    cout<<"12. 二叉树中节点的最大距离\n";
     cout<<GetMaxDistance(T, maxLeft, maxRight)<<endl<<endl;
 
-    cout<<"12. 两结点最低公共祖先\n";
+    cout<<"13. 两结点最低公共祖先\n";
     DateType A,B;
     // cin>>A>>B;
     cout<<GetLastCommonParent(T,A,B)<<endl;
 
     int height = 0;
-    cout<<"13. 判断二叉树是不是平衡二叉树\n"<<isAVL(T,height)<<endl<<endl;
+    cout<<"14. 判断二叉树是不是平衡二叉树\n"<<isAVL(T,height)<<endl<<endl;
 
-    cout <<"14. 释放树空间"<<endl<<endl;
+    cout <<"释放树空间"<<endl<<endl;
     DestroyBinTree(T);
 
     return 0;
 }
 
 /* Sample input
+ //测试：ABC##DE#G##F###     124##57##8##3#6##
  * A B D C E G F H I
  * A B D # # # C E # G # # F H # # I # #
  */
