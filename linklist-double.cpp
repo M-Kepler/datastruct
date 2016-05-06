@@ -1,3 +1,11 @@
+/***********************************************************
+* Author       : M_Kepler
+* EMail        : hellohuangjinjie@gmail.com
+* Last modified: 2016-05-05 17:33:17
+* Filename     : linklist-double.cpp
+* Description  : 双链表
+**********************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef int ElemType;
