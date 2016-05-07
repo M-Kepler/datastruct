@@ -47,6 +47,11 @@ int CreateBiTree(BiTree &T){
 //层次创建二叉树
 /*
  * 1.根据结点的序号关系，在数组中，父结点为i，左儿子为2×i，右儿子为2×i+1
+     * 定义两个哨兵front、rear分别指向父结点和子结点
+     * 判断如果输入的不是虚结点就初始化一个结点
+     * 把输入的结点放到Q[rear]里,并判断是不是第一个结点<根结点>
+     * 判断是否分到结点空间，如果没有分到就是虚结点啊
+     * 根据rear的值来确定是左还是右儿子
  * 2.利用queue,
  */
 
@@ -86,9 +91,6 @@ BiTree createBiTree() {
         }
     }
     return root;
-}
-
-BiTree createBiTree_queue() {
 }
 
 //访问结点
