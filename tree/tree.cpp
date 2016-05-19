@@ -225,11 +225,11 @@ DateType GetLastCommonParent(BiTree t, DateType x, DateType y) {
     //如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
 }
 
+//TODO
 //判断二叉树是不是平衡二叉树
 bool isAVL(BiTree t, int & height) {
     //如果左子树和右子树都是AVL树并且左子树和右子树高度相差不大于1，返回真，其他返回假
-    if(t == NULL) // 空树，返回真
-    {
+    if(t == NULL) {
         height = 0;
         return true;
     }
