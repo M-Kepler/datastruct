@@ -21,7 +21,8 @@
 using namespace std;
 
 typedef char DateType;
-//二叉树结点(链式存储)
+
+//结点(链式存储)
 typedef struct BiTNode{
     DateType data;
     struct BiTNode *lchild,*rchild;
@@ -44,6 +45,7 @@ int CreateBiTree(BiTree &T){
     return 0;
 }
 
+//TODO
 //层次创建二叉树
 /*
  * 1.根据结点的序号关系，在数组中，父结点为i，左儿子为2×i，右儿子为2×i+1
@@ -66,7 +68,6 @@ BiTree createBiTree() {
     while((ch=getchar())!='#')
     {
         s=NULL;
-        //安置结点
         if(ch!='.')
         {
             s=(BiTree)malloc(sizeof(BiTree));
@@ -127,7 +128,6 @@ void PostOrder(BiTree T){
     }
 }
 
-//跟着程序看这里的递归的话感觉从后往上看最小的子树更顺利些
 //树的高度
 int BinTreeDepth(BiTree t) {
     int h,h1,h2;
@@ -193,10 +193,11 @@ void displayLeaf(BiTree t) {
     }
 }
 
-// TODO 求二叉树中节点的最大距离
+// 求二叉树中节点的最大距离
+// TODO
 int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
     if(t == NULL) {
-        maxLeft = 0;
+        maxLeft = 0;//左子树的节点距离根节点的最远距离
         maxRight = 0;
         return 0;
     }
@@ -219,16 +220,37 @@ int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
     return max(max(maxDistLeft, maxDistRight), maxLeft+maxRight);
 }
 
-// *两结点最低公共祖先
-DateType GetLastCommonParent(BiTree t, DateType x, DateType y) {
-    //如果两个节点分别在根节点的左子树和右子树，则返回根节点
-    //如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
+// 两结点最低公共祖先
+// 如果两个节点分别在根节点的左子树和右子树，则返回根节点
+// 如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
+bool FindNode(BiTree t, DateType key) {
+    if(t == NULL)
+        return false;
+    if(t->data == key)
+        return true;
+    bool found = FindNode(t->lchild, key);
+    if(!found)
+        found = FindNode(t->rchild,key);
+    return found;
+}
+DateType GetLastCommonParent(BiTree t, DateType node1, DateType node2) {
+    if(FindNode(t->lchild,node1))
+    {
+        if(FindNode(t->rchild,node2))
+            return t->data;
+        else
+            return GetLastCommonParent(t->lchild,node1,node2);
+    }else{
+        if(FindNode(t->lchild,node2))
+            return t->data;
+        else
+            return GetLastCommonParent(t->rchild,node1,node2);
+    }
 }
 
 //TODO
 //判断二叉树是不是平衡二叉树
 bool isAVL(BiTree t, int & height) {
-    //如果左子树和右子树都是AVL树并且左子树和右子树高度相差不大于1，返回真，其他返回假
     if(t == NULL) {
         height = 0;
         return true;
@@ -380,7 +402,8 @@ int main()
     BiTree T;
     cout<<"请输入二叉树创建方式     1：先序，2：层次"<<endl;
     cout<<"先序:A B C # # D E # G # # F # # #\n";
-    cout<<"层次:ebfad.g..c#\n";
+    // cout<<"层次:ebfad.g..c#\n";
+    cout<<"层次:ebfad.g..c.....#\n";
     int a; cin>>a;
     switch(a){
         case(1):
@@ -443,7 +466,7 @@ int main()
 
     cout<<"13. 两结点最低公共祖先\n";
     DateType A,B;
-    // cin>>A>>B;
+    cin>>A>>B;
     cout<<GetLastCommonParent(T,A,B)<<endl<<endl;
 
     int height = 0;
