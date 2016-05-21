@@ -160,7 +160,7 @@ int getNodeNum(BiTree t) {
 int GetNodeNumKthLevel(BiTree t, int k) {
     if(t == NULL || k < 1)
         return 0;
-    if(t !=NULL || k == 1)
+    if(k == 1)
         return 1;
     int numLeft = GetNodeNumKthLevel(t->lchild, k-1);
     int numRight = GetNodeNumKthLevel(t->rchild, k-1);
@@ -470,7 +470,9 @@ int main()
     cout<<GetLastCommonParent(T,A,B)<<endl<<endl;
 
     int height = 0;
-    cout<<"14. 判断二叉树是不是平衡二叉树\n"<<isAVL(T,height)<<endl<<endl;
+    cout<<"14. 判断二叉树是不是平衡二叉树"<<endl;
+    if(isAVL)
+        cout<<"yes\n\n";
 
     cout <<"释放树空间"<<endl<<endl;
     DestroyBinTree(T);
