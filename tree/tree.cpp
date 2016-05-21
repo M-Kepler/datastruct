@@ -222,6 +222,7 @@ int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
 
 // 两结点最低公共祖先
 // 如果两个节点分别在根节点的左子树和右子树，则返回根节点
+// 如果两节点中的一个是子树的根节点,那结果就是该节点
 // 如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
 bool FindNode(BiTree t, DateType key) {
     if(t == NULL)
@@ -234,6 +235,8 @@ bool FindNode(BiTree t, DateType key) {
     return found;
 }
 DateType GetLastCommonParent(BiTree t, DateType node1, DateType node2) {
+    if(t->data == node1 || t->data == node2)
+        return t->data;
     if(FindNode(t->lchild,node1))
     {
         if(FindNode(t->rchild,node2))
