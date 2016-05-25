@@ -15,8 +15,7 @@ typedef struct BinSearchNode *BinSearchTree;
 typedef BinSearchTree *PBinSearchTree;
 
 //二叉树的检索
-int search(PBinSearchTree ptree,DataType key,PBinSearchNode *position)
-{
+int search(PBinSearchTree ptree,DataType key,PBinSearchNode *position) {
     PBinSearchNode p,q;
     p = *ptree;
     q = p;
@@ -33,8 +32,7 @@ int search(PBinSearchTree ptree,DataType key,PBinSearchNode *position)
 }
 
 //插入
-int insertSearchTree(PBinSearchTree ptree,DataType key)
-{
+int insertSearchTree(PBinSearchTree ptree,DataType key) {
     PBinSearchNode p,position;
     if(search(ptree,key,&position) == 1)
         return 1;
@@ -57,19 +55,16 @@ int insertSearchTree(PBinSearchTree ptree,DataType key)
 }
 
 //构造
-struct DicElement
-{
+struct DicElement {
     DataType value;
 };
 
-struct SeqDictionary
-{
+struct SeqDictionary {
     int n;
     DicElement *element;
 };
 
-int createSearchTree(PBinSearchTree ptree,SeqDictionary *dic)
-{
+int createSearchTree(PBinSearchTree ptree,SeqDictionary *dic) {
     int i;
     *ptree = NULL;
     for(i = 0;i<dic->n;i++)
@@ -80,8 +75,7 @@ int createSearchTree(PBinSearchTree ptree,SeqDictionary *dic)
 }
 
 //删除
-int deleteSearchTree(PBinSearchTree ptree,DataType key)
-{
+int deleteSearchTree(PBinSearchTree ptree,DataType key) {
     PBinSearchNode parentp,p,r;
     p = *ptree;
     parentp = NULL;
