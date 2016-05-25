@@ -1,13 +1,13 @@
 /***********************************************************
-* Author       : M_Kepler
-* EMail        : hellohuangjinjie@gmail.com
-* Last modified: 2016-05-05 16:17:02
+* Author       : tree.cpp
+* EMail        : tree.cpp
+* Last modified: tree.cpp
 * Filename     : tree.cpp
-* Description  :
+* Description  : tree.cpp
     * ./tree.md
     * 需要了解在二叉树里怎么使用递归,只要把树根栽进入就行，注意在程序
         * 里要有跳出递归的语句,一般都是Tree不空就递归
-    * 创建结点:
+    * 创建结点: tree.cpp
         * 采用的是链式存储，所以结点就是一个两个指针的链表结点
 **********************************************************/
 
@@ -194,6 +194,7 @@ void displayLeaf(BiTree t) {
 }
 
 // 求二叉树中节点的最大距离
+// 别误以为仅仅是求二叉树的高度
 // TODO
 int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
     if(t == NULL) {
@@ -201,6 +202,7 @@ int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
         maxRight = 0;
         return 0;
     }
+
     int maxLL, maxLR, maxRL, maxRR;
     int maxDistLeft, maxDistRight;
     if(t->lchild != NULL) {
@@ -218,6 +220,22 @@ int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
         maxRight = 0;
     }
     return max(max(maxDistLeft, maxDistRight), maxLeft+maxRight);
+}
+
+int helper(BiTree root, int &depth){
+    if(root == NULL) {
+        depth = 0;
+        return 0;
+    }
+    int ld, rd;
+    int maxleft = helper(root->lchild, ld);
+    int maxright = helper(root->rchild, rd);
+    depth = max(ld, rd) + 1;
+    return max(maxleft, max(maxright, ld+rd));
+}
+int getMaxDistance(BiTree root) {
+    int depth;
+    return helper(root, depth);
 }
 
 // 两结点最低公共祖先
@@ -465,7 +483,8 @@ int main()
     int maxLeft = 0;
     int maxRight = 0;
     cout<<"12. 二叉树中节点的最大距离\n";
-    cout<<GetMaxDistance(T, maxLeft, maxRight)<<endl<<endl;
+    cout<<GetMaxDistance(T, maxLeft, maxRight)<<endl;
+    cout<<getMaxDistance(T)<<endl<<endl;
 
     cout<<"13. 两结点最低公共祖先\n";
     DateType A,B;
