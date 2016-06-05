@@ -107,6 +107,12 @@ int deleteSearchTree(PBinSearchTree ptree,DataType key) {
 }
 int main()
 {
+    PBinSearchTree T;
     cout<<"create tree\n";
+    DataType data;
+    cin>>data;
+    while(data){
+        insertSearchTree(T,data);
+    }
     return 0;
 }
