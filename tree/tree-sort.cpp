@@ -6,24 +6,24 @@ using namespace std;
 typedef int DataType;
 struct BinSearchNode;
 typedef struct BinSearchNode *PBinSearchNode;
-struct BinSearchNode
-{
+struct BinSearchNode {
     DataType key;
     PBinSearchNode llink,rlink;
 };
 typedef struct BinSearchNode *BinSearchTree;
 typedef BinSearchTree *PBinSearchTree;
 
-//二叉树的检索
-int search(PBinSearchTree ptree,DataType key,PBinSearchNode *position) {
+int searchNode(PBinSearchTree ptree,DataType key,PBinSearchNode *position) {
     PBinSearchNode p,q;
     p = *ptree;
     q = p;
-    while(p!=NULL)
-    {
+    while(p!=NULL) {
         q=p;
-        if(p->key == key){ *position = p; return 1; }
-        else if(p->key > key) p = p->llink;
+        if(p->key == key) {
+            *position = p; return 1;
+        }
+        else if(p->key > key)
+            p = p->llink;
         else
             p= p->rlink;
     }
@@ -34,7 +34,7 @@ int search(PBinSearchTree ptree,DataType key,PBinSearchNode *position) {
 //插入
 int insertSearchTree(PBinSearchTree ptree,DataType key) {
     PBinSearchNode p,position;
-    if(search(ptree,key,&position) == 1)
+    if(searchNode(ptree,key,&position) == 1)
         return 1;
     p = (PBinSearchNode) malloc (sizeof(struct BinSearchNode));
 
@@ -105,6 +105,7 @@ int deleteSearchTree(PBinSearchTree ptree,DataType key) {
     }
 
 }
+
 int main()
 {
     PBinSearchTree T;
