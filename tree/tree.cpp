@@ -349,7 +349,6 @@ void InOrder2(BiTree T) {
         }
     }//while
 }
-
 //后序遍历(非递归)
 typedef struct BiTNodePost {
     BiTree biTree;
@@ -390,7 +389,6 @@ void PostOrder2(BiTree T){
         }
     }//while
 }
-
 //层次遍历
 void LevelOrder(BiTree T){
     BiTree p = T;

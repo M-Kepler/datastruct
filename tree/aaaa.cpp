@@ -131,9 +131,12 @@ void PostOrderF(){
         }
     }
 }
+
+
+
 // 二叉排序树上刪除元素
 void DeleteNode(ELEMENT_TYPE element){
-    int flag=0;  //0表示当前结点在其父结点的左子树上，1表示在其父结点的右子树上   
+    int flag=0;  //0表示当前结点在其父结点的左子树上，1表示在其父结点的右子树上
     if(root==NULL){
         cout<<"错误，二叉树为空"<<endl;
     }
@@ -217,6 +220,7 @@ void DeleteNode(ELEMENT_TYPE element){
         }
     }
 }
+
 // 中序递归线索二叉树，注意第一个结点后最后一个结点（第一个没有前驱，最后一个没有后继）   这两个特殊情况
 /*
  * pre 表示中序遍历事当前结点的前驱结点
@@ -317,25 +321,25 @@ void test01(){
     InsertNodeToCreateTree(62);
     InsertNodeToCreateTree(64);
 
-    //先序遍历树
+    cout<<"先序遍历树:\n";
     PreOrder(root);
     cout<<endl;
     PreOrderF();
 
-    //中序遍历树
+    cout<<"中序遍历树:\n";
     MiddleOrder(root);
     cout<<endl;
     MiddleOrderF();
 
-    //后序遍历树
+    cout<<"后序遍历树:\n";
     PostOrder(root);
     cout<<endl;
     PostOrderF();
     cout<<endl;
-    //删除结点
+    cout<<"删除结点62:\n";
     DeleteNode(62);
 
-    //遍历树
+    cout<<"遍历树:\n";
     PreOrder(root);
     cout<<endl;
     PreOrderF();
@@ -344,7 +348,7 @@ void test01(){
     cout<<endl;
     MiddleOrderF();
 
-    //后序遍历树
+    cout<<"后序遍历树:\n";
     PostOrder(root);
     cout<<endl;
     PostOrderF();
@@ -368,20 +372,20 @@ void test02(){
     InsertNodeToCreateTree(62);
     InsertNodeToCreateTree(64);
 
-    //先序遍历树
+    cout<<"先序遍历树:\n";
     PreOrder(root);
     cout<<endl;
     PreOrderF();
 
-    //中序遍历树
+    cout<<"中序遍历树:\n";
     MiddleOrder(root);
     cout<<endl;
     MiddleOrderF();
 
-    //线索化二叉树
+    cout<<"线索化二叉树:\n";
     InorderLining(root);
 
-    //找前驱后继结点：
+    cout<<"找前驱后继结点:\n";
     FindPreAndPost(18);
     FindPreAndPost(30);
     FindPreAndPost(68);
