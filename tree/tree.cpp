@@ -499,9 +499,3 @@ int main()
 
     return 0;
 }
-
-/* Sample input
- //测试：ABC##DE#G##F###     124##57##8##3#6##
- * A B D C E G F H I
- * A B D # # # C E # G # # F H # # I # #
- */

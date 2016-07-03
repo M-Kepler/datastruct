@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 using namespace std;
+
 typedef int DataType;
 struct BinSearchNode;
 typedef struct BinSearchNode *PBinSearchNode;
 struct BinSearchNode {
     DataType info;
-    PBinSearchNode llink,rlink;
+    struct BinSearchNode *llink, *rlink;
+    // PBinSearchNode llink,rlink;
 };
 typedef struct BinSearchNode *BinSearchTree;
 typedef BinSearchTree *PBinSearchTree;
@@ -116,8 +118,9 @@ int deleteSearchTree(PBinSearchTree ptree,DataType info) {
     PBinSearchNode parentp,p,r;
     p = *ptree;
     parentp = NULL;
-    while(p != NULL)
-    {
+    if(p == NULL)
+        return 0;
+    while(p != NULL) {
         if(p->info == info)
             break;
         parentp = p;
@@ -126,9 +129,6 @@ int deleteSearchTree(PBinSearchTree ptree,DataType info) {
         else
             p = p->rlink;
     }
-    if(p == NULL)
-        return 0;
-
     if(p->llink == NULL)    //被删结点 P 无左子树
     {
         //被删除的结点是根结点

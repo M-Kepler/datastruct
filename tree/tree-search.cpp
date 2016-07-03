@@ -27,7 +27,8 @@ bool searchNode(BiTree root, DataType data) {
 }
 
 void insertNode(BiTree root, DataType data) {
-    BiTNode* newNode = new BiTNode();//可以这样创建新节点?//FIXME
+    // BiTNode* newNode = new BiTNode();
+    BiTree newNode = (BiTree)malloc(sizeof(BiTNode));
     newNode->info = data;
     newNode->llink = newNode->rlink = NULL;
     if(root == NULL) {
@@ -64,8 +65,7 @@ void MiddleOrder(BiTree root) {
 
 int main()
 {
-    // BiTree T;
-    BiTNode* T;
+    BiTree T;
     insertNode(T,36);
     insertNode(T,57);
     insertNode(T,25);

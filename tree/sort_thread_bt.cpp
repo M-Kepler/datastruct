@@ -1,15 +1,42 @@
+/***********************************************************
+* Author       : M_Kepler
+* EMail        : hellohuangjinjie@gmail.com
+* Last modified: 2016-07-03 14:42:46
+* Filename     : sort_thread_bt.cpp
+* Description  :
+    * 查找:
+    * 插入:
+    * 删除:
+        * 删除节点为叶节点
+            *
+        * 删除节点左子树空,右子树非空:
+            * 该节点的右子树替换该节点的位置
+            * 找到右子树里最小的节点替换删除的节点
+            *
+        * 删除节点左子树非空,右子树空:
+            * 该节点的左子树替换该节点的位置
+            * 找到左子树里最大的节点替换删除的节点
+            *
+        * 删除节点左右子树非空
+            * 用该节点左子树最右节点替换该节点的位置
+            * --------右------左--------------------
+**********************************************************/
+
 #include<iostream>
 #include<stack>
 using namespace std;
 typedef int ELEMENT_TYPE;
-//定义树的结点
+
 typedef struct Node{
     ELEMENT_TYPE data;
     struct Node *lchild,*rchild;
-    int ltag,rtag;// 如果ltag=0，有左子树lchild指向左子树的根节点；如果ltag=1，lchild指向前驱
+    int ltag,rtag;
+    // 如果ltag=0，有左子树lchild指向左子树的根节点；如果ltag=1，lchild指向前驱
 }BNode;
+
 //定义树的根节点，（全局变量）默认NULL
 BNode* root;
+
 // 向树中插入结点，构造二叉排序树
 void InsertNodeToCreateTree(ELEMENT_TYPE element){
     //构造根节点
@@ -29,18 +56,20 @@ void InsertNodeToCreateTree(ELEMENT_TYPE element){
         newNode->rchild=NULL;
         while(currentNode!=NULL){
             parentNode=currentNode;
-            if(currentNode->data>element){
+            if(currentNode->data > element){
                 currentNode=currentNode->lchild;
             }
             else
                 currentNode=currentNode->rchild;
         }
-        if(parentNode->data>element)
+        if(parentNode->data > element)
             parentNode->lchild=newNode;
         else
             parentNode->rchild=newNode;
     }
 }
+
+
 //先序递归遍历二叉树
 void PreOrder(BNode* p){
     if(p!=NULL){
@@ -67,6 +96,7 @@ void PreOrderF(){
     }
     cout<<endl;
 }
+
 //中序递归遍历二叉树
 void MiddleOrder(BNode* p){
     if(p!=NULL){
@@ -94,6 +124,7 @@ void MiddleOrderF(){
     }
     cout<<endl;
 }
+
 //后序递归遍历二叉树
 void PostOrder(BNode* p){
     if(p!=NULL){
@@ -133,35 +164,32 @@ void PostOrderF(){
 }
 
 
-
 // 二叉排序树上刪除元素
 void DeleteNode(ELEMENT_TYPE element){
-    int flag=0;  //0表示当前结点在其父结点的左子树上，1表示在其父结点的右子树上
+    int flag=0;
+    //0表示当前结点在其父结点的左子树上，1表示在其父结点的右子树上
     if(root==NULL){
         cout<<"错误，二叉树为空"<<endl;
     }
     else{
-        BNode* currentNode=root;
-        BNode* parentNode=NULL;
-        while(currentNode->data!=element){
-            parentNode=currentNode;
-            if(currentNode->data>element)
+        BNode* currentNode=root;//需要删除的节点
+        BNode* parentNode=NULL;//父节点
+        //找到指定元素的结点,并记录父节点
+        while(currentNode->data != element){
+            parentNode = currentNode;
+            if(currentNode->data > element)
             {
                 flag=0;
                 currentNode=currentNode->lchild;
-            }
-            else
-            {
+            } else {
                 flag=1;
                 currentNode=currentNode->rchild;
             }
         }
-        // 如果找到了指定元素的结点
-        if(currentNode->data==element){
-            if(flag==0)  //当前结点在其父节点的左子树上
-            {
+        if(currentNode->data == element){
+            //当前结点在其父节点的左子树上
+            if(flag==0) {
                 //判断当前结点的子树的情况:
-
                 //当前结点为叶子结点
                 if(currentNode->lchild==NULL && currentNode->rchild==NULL){
                     parentNode->lchild=NULL;
@@ -185,10 +213,9 @@ void DeleteNode(ELEMENT_TYPE element){
                     rnode->lchild=lnode;
                 }
             }
-            if(flag==1)  //当前结点在其父节点的右子树上
-            {
+            //当前结点在其父节点的右子树上
+            if(flag==1) {
                 //判断当前结点的子树的情况:
-
                 //当前结点为叶子结点
                 if(currentNode->lchild==NULL && currentNode->rchild==NULL){
                     parentNode->rchild=NULL;
@@ -354,24 +381,14 @@ void test01(){
     PostOrderF();
     cout<<endl;
 }
-
 void test02(){
-    //插入结点创建排序二叉树
-    InsertNodeToCreateTree(36);
-    InsertNodeToCreateTree(57);
-    InsertNodeToCreateTree(25);
-    InsertNodeToCreateTree(18);
-    InsertNodeToCreateTree(30);
-    InsertNodeToCreateTree(68);
-    InsertNodeToCreateTree(60);
-    InsertNodeToCreateTree(59);
-    InsertNodeToCreateTree(58);
-    InsertNodeToCreateTree(65);
-    InsertNodeToCreateTree(63);
-    InsertNodeToCreateTree(67);
-    InsertNodeToCreateTree(62);
-    InsertNodeToCreateTree(64);
-
+    cout<<"请输入二叉树节点\n";
+    ELEMENT_TYPE data;
+    cin>>data;
+    while(data){
+        InsertNodeToCreateTree(data);
+        cin>>data;
+    }
     cout<<"先序遍历树:\n";
     PreOrder(root);
     cout<<endl;
@@ -385,20 +402,16 @@ void test02(){
     cout<<"线索化二叉树:\n";
     InorderLining(root);
 
-    cout<<"找前驱后继结点:\n";
-    FindPreAndPost(18);
-    FindPreAndPost(30);
-    FindPreAndPost(68);
-    FindPreAndPost(65);
-    FindPreAndPost(67);
-    FindPreAndPost(62);
-    FindPreAndPost(64);
-    FindPreAndPost(55);
+    cout<<"输入需要寻找的前驱后继结点\n";
+    ELEMENT_TYPE find;
+    cin>>find;
+    FindPreAndPost(find);
 }
+
 int main()
 {
     test01();
 
-    //test02();
+    // test02();
     return 0;
 }
