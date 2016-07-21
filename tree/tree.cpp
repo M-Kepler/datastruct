@@ -1,16 +1,26 @@
 /***********************************************************
-* Author       : tree.cpp
-* EMail        : tree.cpp
-* Last modified: tree.cpp
+* Author       : M_Kepler
+* EMail        : hellohuangjinjie@gmail.com
+* Last modified: 2016-07-04 14:31:25
 * Filename     : tree.cpp
-* Description  : tree.cpp
+* Description  :
     * ./tree.md
     * 需要了解在二叉树里怎么使用递归,只要把树根栽进入就行，注意在程序
         * 里要有跳出递归的语句,一般都是Tree不空就递归
     * 创建结点: tree.cpp
         * 采用的是链式存储，所以结点就是一个两个指针的链表结点
 **********************************************************/
+/**********************************************************
+ * Bitree T 定义了一个Bitree对象T;
+ * Bitree &T 定义了一个Bitree的实例对象的引用,也可以实验Bitree **T;需要初始化Bitnode &T=NULL
+ * Bitree *T 定义Bitree的实例对象，指向一个实例对象
+ * typedef struck BiTNode{...}BiNode,*BiTree;
+    BiTNode是BiTNode类型/别名，*BiTree是指向BiTNode类型的指针
+    BiTNode a; BiTree a a是指针; BiTNode *a 相当于BiTree a;
+ *
 
+
+**********************************************************/
 #include <iostream>
 #include <malloc.h>
 #include <math.h>
@@ -59,7 +69,7 @@ int CreateBiTree(BiTree &T){
 
 BiTree createBiTree() {
     char ch;
-    BiTNode*Q[maxsize];
+    BiTree Q[maxsize]; // BiTNode*Q[maxsize];
     int front,rear;
     BiTree root, s;
     root=NULL;

@@ -4,6 +4,8 @@
 * Last modified: 2016-07-03 14:42:46
 * Filename     : sort_thread_bt.cpp
 * Description  :
+    * 线索二叉树:
+        *
     * 查找:
     * 插入:
     * 删除:
@@ -18,8 +20,8 @@
             * 找到左子树里最大的节点替换删除的节点
             *
         * 删除节点左右子树非空
-            * 用该节点左子树最右节点替换该节点的位置
-            * --------右------左--------------------
+            * 用该节点左子树最右/大节点替换该节点的位置
+            * --------右------左/小--------------------
 **********************************************************/
 
 #include<iostream>
@@ -31,7 +33,8 @@ typedef struct Node{
     ELEMENT_TYPE data;
     struct Node *lchild,*rchild;
     int ltag,rtag;
-    // 如果ltag=0，有左子树lchild指向左子树的根节点；如果ltag=1，lchild指向前驱
+    // 如果ltag=0，表示存在左子树，指向左子树；
+    // 如果ltag=1，表示左子树为NULL,lchild指向前驱
 }BNode;
 
 //定义树的根节点，（全局变量）默认NULL
@@ -68,7 +71,6 @@ void InsertNodeToCreateTree(ELEMENT_TYPE element){
             parentNode->rchild=newNode;
     }
 }
-
 
 //先序递归遍历二叉树
 void PreOrder(BNode* p){
@@ -162,7 +164,6 @@ void PostOrderF(){
         }
     }
 }
-
 
 // 二叉排序树上刪除元素
 void DeleteNode(ELEMENT_TYPE element){
@@ -270,11 +271,13 @@ void InorderLining(BNode* p){
         InorderLining(p->rchild);
     }
 }
+
 //根据中序线索化之后查找某个元素值结点的前驱和后继
-//需要注意的是，当对二叉树进行线索化之后，结点的指针域发生了变化，原来有效的指针的条件都是tag==0
+//需要注意的是，当对二叉树进行线索化之后，结点的指针域发生了变化，
+//原来有效的指针的条件都是tag==0
 void FindPreAndPost(ELEMENT_TYPE element){
     if(root==NULL){
-        cout<<"错误，二叉树为空"<<endl;
+        cout<<"二叉树为空"<<endl;
     }
     else{
         BNode* currentNode=root;
@@ -289,8 +292,7 @@ void FindPreAndPost(ELEMENT_TYPE element){
         // 如果找到了指定元素的结点
         if(currentNode!=NULL &currentNode->data==element){
             cout<<"当前结点的值："<<element<<"   ";
-            if(currentNode->ltag==1)
-            {
+            if(currentNode->ltag==1) {
                 if(currentNode->lchild!=NULL)
                     cout<<"前驱是："<<currentNode->lchild->data<<"   ";
                 else
@@ -303,11 +305,9 @@ void FindPreAndPost(ELEMENT_TYPE element){
                     lnode=lnode->rchild;
                 cout<<"前驱是:"<<lnode->data<<"   ";
             }
-            if(currentNode->rtag==1)
-            {
+            if(currentNode->rtag==1) {
                 if(currentNode->rchild!=NULL)
                     cout<<"后继是："<<currentNode->rchild->data<<"   ";
-
             }
             //如果右子树不为空的话，则当前结点的后继为其右子树树的“最左下方”结点
             else{
@@ -410,8 +410,6 @@ void test02(){
 
 int main()
 {
-    test01();
-
-    // test02();
+    test02();
     return 0;
 }
