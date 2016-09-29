@@ -1,118 +1,90 @@
+/***********************************************************
+ * Author       : M_Kepler
+ * EMail        : hellohuangjinjie@gmail.com
+ * Last modified: 2016-07-04 20:55:04
+ * Filename     : tree-sort.cpp
+ * Description  :
+ **********************************************************/
+
 #include <iostream>
 #include <malloc.h>
-#include <stdlib.h>
-#include <stdio.h>
 using namespace std;
+
 typedef int DataType;
-struct BinSearchNode;
-typedef struct BinSearchNode *PBinSearchNode;
-struct BinSearchNode
+typedef struct BinSearchTree{
+    DataType data;
+    struct BinSearchTree *llink,*rlink;
+}BinTNode,*BinTree;
+
+bool searchNode(BinTree T, DataType key)
 {
-    DataType key;
-    PBinSearchNode llink,rlink;
-};
-typedef struct BinSearchNode *BinSearchTree;
-typedef BinSearchTree *PBinSearchTree;
-
-//二叉树的检索
-int search(PBinSearchTree ptree,DataType key,PBinSearchNode *position) {
-    PBinSearchNode p,q;
-    p = *ptree;
-    q = p;
-    while(p!=NULL)
-    {
-        q=p;
-        if(p->key == key){ *position = p; return 1; }
-        else if(p->key > key) p = p->llink;
-        else
-            p= p->rlink;
+    bool found;
+    if(T == NULL){
+        found = false;
     }
-    *position = q;
-    return 0;
+    while(T!=NULL){
+        if(T->data == key){
+            found = true;
+        }
+        else if (T->data < key){
+            T = T->rlink;
+        }
+        else
+            T = T->llink;
+    }
+    return found;
 }
 
-//插入
-int insertSearchTree(PBinSearchTree ptree,DataType key) {
-    PBinSearchNode p,position;
-    if(search(ptree,key,&position) == 1)
-        return 1;
-    p = (PBinSearchNode) malloc (sizeof(struct BinSearchNode));
-
-    if(p==NULL)
-    {
-        printf("Error\n");
-        return 0;
+void insertNode(BinTree T, DataType key)
+{
+    BinTNode *newNode = (BinTree)malloc(sizeof(BinTNode));
+    newNode->data = key;
+    newNode->llink = newNode->rlink = NULL;
+    if(T == NULL){
+        T = newNode;
+    }else{
+        BinTNode* parentNode =(BinTree)malloc(sizeof(BinTNode));
+        BinTNode* currentNode=(BinTree)malloc(sizeof(BinTNode));
+        currentNode = T;
+        while(currentNode!=NULL){
+            parentNode = currentNode;
+            if(currentNode->data == key){
+                cout<<"item already exist\n";
+            }
+            else if (currentNode->data < key)
+                currentNode = currentNode->rlink;
+            else
+                currentNode = currentNode->llink;
+        }
+        if(currentNode->data < key)
+            currentNode->rlink  = newNode;
+        else
+            currentNode->llink = newNode;
     }
-    p->key = key;
-    p->llink = p->rlink = NULL;
-    if(position == NULL)
-        *ptree = p;
-    else if(key < position->key)
-        position->llink = p;
-    else
-        position->rlink = p;
-    return 1;
 }
 
-//构造
-struct DicElement {
-    DataType value;
-};
-
-struct SeqDictionary {
-    int n;
-    DicElement *element;
-};
-
-int createSearchTree(PBinSearchTree ptree,SeqDictionary *dic) {
-    int i;
-    *ptree = NULL;
-    for(i = 0;i<dic->n;i++)
-        //if(!insertSearchTree(ptree,dic->element[i].key))
-        if(!insertSearchTree(ptree,dic->element[i].value))
-            return 0;
-    return 1;
+void visit(BinTree T){
+    if(T!=NULL){
+        cout<<T->data<<" ";
+    }
 }
-
-//删除
-int deleteSearchTree(PBinSearchTree ptree,DataType key) {
-    PBinSearchNode parentp,p,r;
-    p = *ptree;
-    parentp = NULL;
-    while(p != NULL)
-    {
-        if(p->key == key)
-            break;
-        parentp = p;
-        if(p->key > key)
-            p = p->llink;
-        else
-            p = p->rlink;
+void MiddleOrder(BinTree T){
+    if(T !=NULL){
+        MiddleOrder(T->llink);
+        visit(T);
+        MiddleOrder(T->rlink);
     }
-    if(p == NULL)
-        return 0;
-
-    if(p->llink == NULL)    //被删结点 P 无左子树
-    {
-        //被删除的结点是根结点
-        if(parentp == NULL)
-            *ptree = p->rlink;
-
-        else if(parentp->llink == p)
-            parentp ->llink = p->rlink;
-        else
-            parentp ->rlink = p->rlink;
-    }
-
 }
 int main()
 {
-    PBinSearchTree T;
-    cout<<"create tree\n";
-    DataType data;
-    cin>>data;
-    while(data){
-        insertSearchTree(T,data);
-    }
+    BinTree T=NULL;
+    insertNode(T, 12);
+    insertNode(T, 2);
+    insertNode(T, 22);
+    insertNode(T, 11);
+    insertNode(T, 14);
+    insertNode(T, 8);
+    insertNode(T, 7);
+    cout<<T;
     return 0;
 }
