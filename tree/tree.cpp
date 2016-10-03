@@ -18,6 +18,8 @@
     BiTNode是BiTNode类型/别名，*BiTree是指向BiTNode类型的指针
     BiTNode a; BiTree a a是指针; BiTNode *a 相当于BiTree a;
  *
+ * FIXME
+ * 对于层次创建出来的二叉树好像有问题
 
 
 **********************************************************/
@@ -152,8 +154,8 @@ int BinTreeDepth(BiTree t) {
     }
 }
 
-//求树的结点数
-int getNodeNum(BiTree t) {
+int getNodeNum(BiTree t) //求树的结点数
+{
     int num1,num2,num;
     if(t == NULL)
         return 0;
@@ -166,8 +168,8 @@ int getNodeNum(BiTree t) {
     // return (getNodeNum(t->lchild)+getNodeNum(t->rchild)+1);
 }
 
-//求二叉树第K层的结点个数
-int GetNodeNumKthLevel(BiTree t, int k) {
+int GetNodeNumKthLevel(BiTree t, int k) //求二叉树第K层的结点个数
+{
     if(t == NULL || k < 1)
         return 0;
     if(k == 1)
@@ -178,9 +180,8 @@ int GetNodeNumKthLevel(BiTree t, int k) {
 }
 //↑TODO↓
 
-//求二叉树中叶子结点的个数
 //和求二叉树的结点数差不多就是if的判断条件不一样
-int GetLeafNodeNum(BiTree t) {
+int GetLeafNodeNum(BiTree t) { //求二叉树中叶子结点的个数
     if(t == NULL)
         return 0;
     if(t->lchild ==NULL && t->rchild ==NULL)
@@ -190,8 +191,8 @@ int GetLeafNodeNum(BiTree t) {
     return (numleft + numright);
 }
 
-//输出叶子结点
-void displayLeaf(BiTree t) {
+void displayLeaf(BiTree t)  //输出叶子结点
+{
     if(t!=NULL) {
         if(t->lchild==NULL && t->rchild==NULL) {
             cout<<t->data<<" ";
@@ -203,10 +204,10 @@ void displayLeaf(BiTree t) {
     }
 }
 
-// 求二叉树中节点的最大距离
 // 别误以为仅仅是求二叉树的高度
 // TODO
-int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) {
+int GetMaxDistance(BiTree t, int & maxLeft, int & maxRight) // 求二叉树中节点的最大距离
+{
     if(t == NULL) {
         maxLeft = 0;//左子树的节点距离根节点的最远距离
         maxRight = 0;
@@ -248,11 +249,10 @@ int getMaxDistance(BiTree root) {
     return helper(root, depth);
 }
 
-// 两结点最低公共祖先
-// 如果两个节点分别在根节点的左子树和右子树，则返回根节点
-// 如果两节点中的一个是子树的根节点,那结果就是该节点
-// 如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
-bool FindNode(BiTree t, DateType key) {
+bool FindNode(BiTree t, DateType key) { // 两结点最低公共祖先
+    // 如果两个节点分别在根节点的左子树和右子树，则返回根节点
+    // 如果两节点中的一个是子树的根节点,那结果就是该节点
+    // 如果两个节点都在左子树，则递归处理左子树；如果两个节点都在右子树，则递归处理右子树
     if(t == NULL)
         return false;
     if(t->data == key)
@@ -279,9 +279,22 @@ DateType GetLastCommonParent(BiTree t, DateType node1, DateType node2) {
     }
 }
 
+void swap_biTree(BiTree t)
+{
+    if(t == NULL || (t->lchild == NULL && t->rchild == NULL))
+        return;
+    BiTree tmp = t->lchild;
+    t->lchild = t->rchild;
+    t->rchild = tmp;
+    if (t->lchild)
+        swap_biTree(t->lchild);
+    if (t->rchild)
+        swap_biTree(t->rchild);
+
+}
 //TODO
-//判断二叉树是不是平衡二叉树
-bool isAVL(BiTree t, int & height) {
+bool isAVL(BiTree t, int & height) //判断二叉树是不是平衡二叉树
+{
     if(t == NULL) {
         height = 0;
         return true;
@@ -300,8 +313,7 @@ bool isAVL(BiTree t, int & height) {
     }
 }
 
-//释放树空间
-void DestroyBinTree(BiTree t) {
+void DestroyBinTree(BiTree t) { //释放树空间
     if(t == NULL) return;
     DestroyBinTree( t->lchild );
     DestroyBinTree( t->rchild );
@@ -425,14 +437,17 @@ void LevelOrder(BiTree T){
     }
 }
 
+
 int main()
 {
 
     BiTree T;
     cout<<"请输入二叉树创建方式     1：先序，2：层次"<<endl;
-    cout<<"先序:A B C # # D E # G # # F # # #\n";
+    cout<<"先序1:A B C # # D E # G # # F # # #\n";
+    cout<<"先序2:e b a # # d c # # # f # g # #\n";
     // cout<<"层次:ebfad.g..c#\n";
-    cout<<"层次:ebfad.g..c.....#\n";
+    // cout<<"层次:ebfad.g..c.....#\n";
+    cout<<"层次:ebfad.g..c...#\n";
     int a; cin>>a;
     switch(a){
         case(1):
@@ -444,7 +459,7 @@ int main()
             T = createBiTree( );
             break;
     }
-    printf("1. 先序遍历：\n");
+    printf("\n1. 先序遍历：\n");
     PreOrder(T);
     printf("\n");
 
@@ -479,7 +494,7 @@ int main()
     cout<<"9. 求二叉树第K层的节点个数"<<endl;
     int k;
     cin>>k;
-    cout<<"个数为"<<endl<<GetNodeNumKthLevel(T,k)<<endl<<endl;
+    cout<<"个数为:"<<GetNodeNumKthLevel(T,k)<<endl<<endl;
 
     cout<<"10. 二叉树中叶子节点的个数\n";
     cout<<GetLeafNodeNum(T)<<endl<<endl;
@@ -501,10 +516,15 @@ int main()
 
     int height = 0;
     cout<<"14. 判断二叉树是不是平衡二叉树"<<endl;
-    if(isAVL)
+    if( isAVL(T, height))
         cout<<"yes\n\n";
 
-    cout <<"释放树空间"<<endl<<endl;
+    cout<<"15. 翻转二叉树后中序遍历:"<<endl;
+    swap_biTree(T);
+    InOrder(T);
+    cout<<endl;
+
+    cout <<"\n释放树空间"<<endl<<endl;
     DestroyBinTree(T);
 
     return 0;
