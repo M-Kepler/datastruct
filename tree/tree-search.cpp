@@ -65,7 +65,7 @@ void MiddleOrder(BiTree root) {
 
 int main()
 {
-    BiTree T;
+    BiTree T=NULL;
     insertNode(T,36);
     insertNode(T,57);
     insertNode(T,25);

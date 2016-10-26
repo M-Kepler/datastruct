@@ -3,8 +3,7 @@
 * EMail        : hellohuangjinjie@gmail.com
 * Last modified: 2016-04-08 08:00:23
 * Filename     : sort.cpp
-* Description  : still 不完美
-
+* Description  :
 排序：
     blog.csdn.net/hguisu/article/details/7776068
 非常详细
@@ -110,7 +109,7 @@ void quickSort(int *a,int left,int right)
  */
 void chooseSort(int s[],int len)
 {
-    int i,j,minIndex,tmp;
+    int i,j,minIndex;
     for (i=0; i<len ; i++)
     {
         minIndex = i;
@@ -161,29 +160,30 @@ void heapSort(int *a,int len)
     }
 }
 
-//插入排序 --- 直接插入排序 O(n) -> O(n^2)
-/*
- * 已排序的序列为A,初始只有一个元素，从s中将元素插入到a中
- * 只要将A中所有小与S[0]的元素后移一位，然后把S[0]放入就行了
- */
-void insertSort1(int s[],int len)
-{
+// 插入排序 --- 直接插入排序
+// [时间复杂度]:O(n) -> O(n^2) * [空间复杂度]:O(1)(借用了一个空间tmp)
+//
+/* 已排序的序列为A,刚开始只有一个元素,从s中取元素与已排序的a中的元素做比较,
+* 找到合适的位置,最后插入到a中.
+* 移动元素可以不断做交换或者用前一个元素直接将后一个元素覆盖
+*/
+void insertSort1(int s[],int len) {
     int tmp,i,j;
-    for (i = 1; i <len; i++)
-    {
-        //1 2 3 5 6 4 9
-        tmp = s[i];    //要插入的元素
-        // 先将s[i]存入tmp，在元素后移时不必多次存入tmp
-        for (j = i-1; j >= 0 && s[j]>tmp; j--)
+    for (i = 1; i <len; i++) {
+        tmp = s[i];
+        //要插入的元素先存tmp里,因等一下移动元素的时候需要将s[i]覆盖掉
+        for (j = i-1; j >= 0 && s[j]>tmp; j--){
+            // 插入的元素与排好序的序列从后往前做比较,一边比较一边往后挪
+            // 由于j--后才发现满足跳出循环的条件,所以j+1才是tmp应该在的位置
             s[j+1] = s[j];
-        //for里j往前试探了一下是否要>temp,所以这里+1就是正确的位置。
+        }
         s[j+1] = tmp;
     }
 }
-void insertSort2(int a[], int len)
-{
-    for(int i= 1; i<len; i++)
-    {
+
+
+void insertSort2(int a[], int len) {
+    for(int i= 1; i<len; i++) {
         if(a[i] < a[i-1])
         {     //若第i个元素大于i-1元素，直接插入。小于的话，移动有序表后插入
             int j= i-1;
@@ -197,6 +197,68 @@ void insertSort2(int a[], int len)
         }
     }
 }
+
+
+//插入排序 --- 二分插入排序排序
+// [时间复杂度]:O(n) -> O(n^2) * [空间复杂度]:O(1)(借用了一个空间tmp)
+/*
+ * 二分插入排序比直接插入排序好就好在可以用二分法较快地查找到
+ * 需要插入的元素在已经排好序的序列中的位置, 比较次数为O(log2(n))
+ */
+void binSort(int a[], int len) {
+    int i, j, left, mid, right, tmp;
+    for (i=1; i<len; i++) {
+        tmp = a[i];
+        left = 0; right = i-1;
+        while(left <= right){
+            mid = (left+right)/2;
+            if(a[mid] <= tmp)
+                left = mid + 1;  // 要加1啊啊
+            else
+                right = mid - 1;
+        } // 循环结束的时候,left肯定就是应该插入的位置
+
+        for(j=i-1; j>=left; j--)
+            a[j+1] = a[j]; // 把left后面的元素往后挪动
+
+        // 如果新插入的元素要比已排序序列中的元素都大,就没有必要做对换了
+        if(left != i)
+            a[left] = tmp;
+    }
+}
+
+
+
+//插入排序 --- 表排序
+//放在linklist-single.cpp里测试成功了
+/*
+void ListSort(LinkList llist){
+    Node *pre, *p, *q, *now, *head;
+    head = llist; pre = head->link;
+    if(pre == NULL) return;
+    now = pre->link;
+    if(now == NULL) return;
+    while( now != NULL){
+        q = head;
+        p = head->link;
+        while(p!=now && p->info <= now->info){
+            q = p;
+            p = p->link;
+        }
+        if(p == now){
+            pre = pre->link;
+            now = pre->link;
+            continue;
+        }
+        pre->link = now->link;
+        q->link = now;
+        now->link = p;
+
+        now = pre->link;
+    }
+}
+*/
+
 
 //插入排序 --- 希尔排序(缩小增量法) O(n^(3/2))
 /*
@@ -321,13 +383,10 @@ int main()
     int *s = new int [n];
     create(s);
 
+
+    cout<<"交换排序:\n";
     cout<<"bubbleSort"<<endl;
     bubbleSort(s,n);
-    print(s);
-    cout<<endl;
-
-    cout<<"insertSort1"<<endl;
-    insertSort1(s,n);
     print(s);
     cout<<endl;
 
@@ -336,8 +395,18 @@ int main()
     print(s);
     cout<<endl;
 
-    cout<<"heapSort"<<endl;
-    heapSort(s,n);
+
+    cout<<"\n插入排序:\n";
+    cout<<"insertSort1"<<endl;
+    insertSort1(s,n);
+    print(s);
+    cout<<endl;
+    cout<<"insertSort2"<<endl;
+    insertSort2(s,n);
+    print(s);
+    cout<<endl;
+    cout<<"binSort"<<endl;
+    binSort(s,n);
     print(s);
     cout<<endl;
 
@@ -346,16 +415,27 @@ int main()
     print(s);
     cout<<endl;
 
-    cout<<"mergeSort"<<endl;
-    mergeSort(s,0,n);
-    print(s);
-    cout<<endl;
 
+    cout<<"\n选择排序:\n";
     cout<<"chooseSort"<<endl;
     chooseSort(s,n);
     print(s);
     cout<<endl;
 
+    cout<<"heapSort"<<endl;
+    heapSort(s,n);
+    print(s);
+    cout<<endl;
+
+
+    cout<<"\n归并排序:\n";
+    cout<<"mergeSort"<<endl;
+    mergeSort(s,0,n);
+    print(s);
+    cout<<endl;
+
+
+    cout<<"\n其他:\n";
     cout<<"pancakeSort"<<endl;
     pancakeSort(s,n);
     print(s);
