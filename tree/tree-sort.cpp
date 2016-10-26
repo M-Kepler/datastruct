@@ -14,10 +14,9 @@ typedef int DataType;
 typedef struct BinSearchTree{
     DataType data;
     struct BinSearchTree *llink,*rlink;
-}BinTNode,*BinTree;
+}BinTNode, *BinTree;
 
-bool searchNode(BinTree T, DataType key)
-{
+bool searchNode(BinTree T, DataType key) {
     bool found;
     if(T == NULL){
         found = false;
@@ -35,8 +34,7 @@ bool searchNode(BinTree T, DataType key)
     return found;
 }
 
-void insertNode(BinTree T, DataType key)
-{
+void insertNode(BinTree T, DataType key) {
     BinTNode *newNode = (BinTree)malloc(sizeof(BinTNode));
     newNode->data = key;
     newNode->llink = newNode->rlink = NULL;

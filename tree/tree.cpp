@@ -94,11 +94,12 @@ BiTree createBiTree() {
             root=s;
         else
         {
-            if(s && Q[front])
+            if(s && Q[front]){
                 if(rear%2==0)
                     Q[front]->lchild=s;
                 else
                     Q[front]->rchild=s;
+            }
             if(rear%2==1)
                 front++;
         }
@@ -398,7 +399,7 @@ void PostOrder2(BiTree T){
             BT = stack.top();
             //退栈
             stack.pop();
-            BT->biTree;
+            // BT->biTree;
             printf("%c ",BT->biTree->data);
         }
         //遍历右子树
