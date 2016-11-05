@@ -103,25 +103,38 @@ void quickSort(int *a,int left,int right)
 
 //选择排序 --- 直接选择排序 O(n) -> O(n^2)
 /*
- * 每趟都从未排序的序列b中和b序列的第一个数b.1做比较，
- * 如果比它小，就更新minIndex，循环后，肯定是最小元素的index，
+ * 每趟都从未排序的序列B中和B序列的第一个数B[0]做比较，
+ *
+ * 如果比它小,就更新minIndex循环后,肯定是最小元素的index，
  * 然后b[minindex]和b.1交换
+ *
+ * // 如果比它小,就交换两个元素的值, 所以一遍下来,
+ * // B[0]就是待排序最小的元素了
  */
-void chooseSort(int s[],int len)
-{
+void chooseSort(int s[],int len) {
     int i,j,minIndex;
-    for (i=0; i<len ; i++)
-    {
+    for (i=0; i<len ; i++) {
         minIndex = i;
         //找出未排序中最小元素的下标
-        for (j=i+1; j<len ; j++)
-        {
+        for (j=i+1; j<len ; j++) {
             if (s [j]< s[minIndex])
                 minIndex = j;
         }
         //交换最小元素和s[j];
         if (minIndex != i)
             swap(s[minIndex], s[i]);
+    }
+}
+
+// 和上面不同的是,这个只要找到比s[i]小的就交换,
+// 而上面是修改minindex来指向较小的元素的下标, // 所以这个交换次数会多一些
+void chooseSort2(int s[],int len) {
+    int i,j;
+    for (i=0; i<len ; i++) {
+        for (j=i+1; j<len ; j++) {
+            if (s [j]< s[i])
+                swap(s[i], s[j]);
+        }
     }
 }
 
@@ -137,10 +150,8 @@ void chooseSort(int s[],int len)
  * 时间复杂度为 O(nlogn),好于冒泡,简单选择,直接插入的O(n^2)
  *
  */
-void sink(int *a,int m,int k)
-{
-    while(2*k<=m)
-    {
+void sink(int *a,int m,int k) {
+    while(2*k<=m) {
         int j=2*k;
         if(j<m && a[j]<a[j+1])
             j++;
@@ -149,8 +160,7 @@ void sink(int *a,int m,int k)
         k = j;
     }
 }
-void heapSort(int *a,int len)
-{
+void heapSort(int *a,int len) {
     for(int k=len/2;k>=1;k--)
         sink(a,len,k);
     for(;len>1;){
@@ -184,8 +194,8 @@ void insertSort1(int s[],int len) {
 
 void insertSort2(int a[], int len) {
     for(int i= 1; i<len; i++) {
-        if(a[i] < a[i-1])
-        {     //若第i个元素大于i-1元素，直接插入。小于的话，移动有序表后插入
+        if(a[i] < a[i-1]) {
+            //若第i个元素大于i-1元素，直接插入。小于的话，移动有序表后插入
             int j= i-1;
             int x = a[i];      //复制为哨兵，即存储待排序元素
             a[i] = a[i-1];    //先后移一个元素
@@ -259,32 +269,26 @@ void ListSort(LinkList llist){
 }
 */
 
-
 //插入排序 --- 希尔排序(缩小增量法) O(n^(3/2))
 /*
  * 从S中每隔gap取一次数，在这些数中进行分组insertsort
  * 并不是实实在在地抽取数据出来,
  * gap的选取一般是 n/2、n/4、n/8、.... 、1
  */
-void shellSort(int a[], int len)
-{
+void shellSort(int a[], int len) {
     // 6 2 9 1 5 4
     // 6 1 \ 2 5 \ 9 4    3
     // 1 2 4 6 5 9
     int i, j, gap;
-    for (gap = len / 2; gap > 0; gap /= 2) //步长
-    {
+    for (gap = len / 2; gap > 0; gap /= 2) { //步长
         //循环gap次，这样取过的元素不会重复被取
         for (i = 0; i < gap; i++)        //直接插入排序
         {
-            for (j = i + gap; j < len; j += gap)
-            {
-                if (a[j] < a[j - gap])
-                {
+            for (j = i + gap; j < len; j += gap) {
+                if (a[j] < a[j - gap]) {
                     int temp = a[j];
                     int k = j - gap;
-                    while (k >= 0 && a[k] > temp)
-                    {
+                    while (k >= 0 && a[k] > temp) {
                         a[k + gap] = a[k];
                         k -= gap;
                     }
@@ -303,14 +307,12 @@ void shellSort(int a[], int len)
  * 时间复杂度为O(nlogn),空间复杂度为O(n+logn),如果非递归实现归并,则避免了递归时深度为logn的栈空间
  * 空间复杂度为O(n)
  */
-void merge(int *a,int start,int mid,int end)
-{
+void merge(int *a,int start,int mid,int end) {
     if(start>mid || mid >end )
         return;
     int i=start,j=mid+1,k=0;
     int *L=(int *)malloc((end-start+1)*sizeof(int));
-    while(i<=mid && j<=end)
-    {
+    while(i<=mid && j<=end) {
         if(a[i]<a[j])
             L[k++]=a[i++];
         else
@@ -326,10 +328,8 @@ void merge(int *a,int start,int mid,int end)
         a[i]=L[j];
     //free(L);
 }
-void mergeSort(int *a, int start,int end)
-{
-    if(start<end)
-    {
+void mergeSort(int *a, int start,int end) {
+    if(start<end) {
         int mid=(start+end)/2;
         mergeSort(a,start,mid);
         mergeSort(a,mid+1,end);
@@ -343,12 +343,10 @@ void mergeSort(int *a, int start,int end)
  * 2. 然后再把整个数组arr 反转，这样 max 就到达最后面了
  * 3. 再对去掉 max 后的数组进行 1和2 的操作
  */
-void flip(int*arr, int i)
-{
+void flip(int*arr, int i) {
     // 逆置数组 arr[0..i]
     int temp, start = 0;
-    while(start <i)
-    {
+    while(start <i) {
         temp = arr[start];
         arr[start]=arr[i];
         arr[i]=temp;
@@ -356,8 +354,7 @@ void flip(int*arr, int i)
         i--;
     }
 }
-int findMax(int*arr, int n)
-{
+int findMax(int*arr, int n) {
     // 找出 arr[0..n-1] 内最大的元素的下标
     int mi, i;
     for (mi = 0, i = 0; i < n; ++i)
@@ -365,18 +362,18 @@ int findMax(int*arr, int n)
             mi = i;
     return mi;
 }
-void pancakeSort(int *arr, int n)
-{
-    for (int curr_size = n; curr_size > 1; --curr_size)
-    {
+void pancakeSort(int *arr, int n) {
+    for (int curr_size = n; curr_size > 1; --curr_size) {
         int mi = findMax(arr, curr_size);
-        if (mi != curr_size-1)
-        {
+        if (mi != curr_size-1) {
             flip(arr, mi);
             flip(arr, curr_size-1);
         }
     }
 }
+
+
+
 
 int main()
 {
@@ -419,6 +416,11 @@ int main()
     cout<<"\n选择排序:\n";
     cout<<"chooseSort"<<endl;
     chooseSort(s,n);
+    print(s);
+    cout<<endl;
+
+    cout<<"chooseSort2"<<endl;
+    chooseSort2(s,n);
     print(s);
     cout<<endl;
 
