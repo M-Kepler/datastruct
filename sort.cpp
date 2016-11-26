@@ -20,8 +20,7 @@ gif图:
 using namespace std;
 const int  n = 10;
 void create(int a[])
-{
-    srand((unsigned)time(NULL));
+{ srand((unsigned)time(NULL));
     for(int i =0;i<10;i++)
         a[i] = rand()%100+1;
 }
@@ -436,6 +435,8 @@ int main()
     print(s);
     cout<<endl;
 
+    cout<<"\n分配排序:\n";
+    cout<<"\n基数排序:\n";
 
     cout<<"\n其他:\n";
     cout<<"pancakeSort"<<endl;
