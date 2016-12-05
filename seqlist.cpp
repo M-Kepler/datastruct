@@ -2,7 +2,7 @@
 * Author       : M_Kepler
 * EMail        : hellohuangjinjie@gmail.com
 * Last modified: 2016-04-13 18:23:00
-* Filename     : tet.cpp
+* Filename     : SeqList.cpp
 * Description  :
         * 创建空顺序表
         * 根据元素输出下标
@@ -122,8 +122,7 @@ int deleteP_seq(PSeqList palist, int p)
  */
 int deleteV_seq(PSeqList palist, Datatype key)
 {
-    int count=0;
-    int i;
+    int count=0, i;
     for(i=0; i<palist->n; i++)
     {
         if(palist->element[i] == key)
@@ -145,8 +144,10 @@ void deleteV_seq_pro(PSeqList palist, Datatype key)
     int i,k=0;
     for(i=0; i<palist->n; i++)
     {
-        palist->element[k] = palist->element[i];
-        k++;
+        if(palist->element[i]!= key){
+            palist->element[k] = palist->element[i];
+            k++;
+        }
     }
     palist->n = k;
 }
@@ -160,7 +161,7 @@ void reverSeq(PSeqList palist)
         tmp = palist->element[palist->n-1];
         palist->element[palist->n-1]=palist->element[i];
         palist->element[i]=tmp;
-        palist->n-1;
+        // palist->n-1;
     }
 }
 
@@ -214,8 +215,8 @@ int main()
     Datatype data_delete;
     cout<<"input item you want to del:\n";
     cin>>data_delete;
-    // deleteV_seq(palist, data_delete);
-    deleteV_seq(palist, data_delete);
+    //这个也行 deleteV_seq(palist, data_delete);
+    deleteV_seq_pro(palist, data_delete);
     showSeq(palist);
 
     cout<<"Reverse list:\n";

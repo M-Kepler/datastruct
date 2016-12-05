@@ -39,6 +39,7 @@ int isNullList_link (LinkList llist){
     return (llist -> link == NULL);
 }
 
+//输出链表
 void showLinkList(LinkList llist)
 {
     PNode tmp = llist;
@@ -51,9 +52,12 @@ void showLinkList(LinkList llist)
 }
 
 //求某元素的储存位置
-PNode locate_x(LinkList llist,DataType x){
+PNode locate_x(LinkList llist, DataType x){
     PNode p;
-    if ( llist == NULL ) return NULL;
+    if ( llist == NULL )
+        return NULL;
+    //FIXME
+    //头结点就是llist了，这里的p就是链表的第一个元素
     p = llist -> link;
     while ( p!=NULL && p->info != x)
         p = p->link; //指针循环移动
@@ -88,8 +92,11 @@ PNode locatePre_link(LinkList llist,PNode p){
 }
 
 //单链表的删除
-int deleteV_link(LinkList llist,DataType x){
+int deleteValue(LinkList llist,DataType x){
     PNode p,q;
+
+    //FIXME
+    //p和llist都是头结点
     p =llist;
     if( p==NULL )
         return 0;
@@ -110,13 +117,13 @@ int deleteV_link(LinkList llist,DataType x){
 }
 
 //删除下标为i的结点
-int deleteP_link(LinkList llist, int i){
+void deletePosition(LinkList llist, int i) {
     PNode p;
     p=llist;
-    for(int j=0;j<i;j++){
-        if(!p->link){
+    for(int j=0; j<i; j++) {
+        if(!p->link) {
             printf("Not exist\n");
-            return 0;
+            break;
         }
         else
             p=p->link;
@@ -124,9 +131,10 @@ int deleteP_link(LinkList llist, int i){
     p->link=p->link->link;
 }
 
+
 /*
- * 值得思考的问题
- * 1. 将1结点后的2～n结点一个个插入到head结点后,
+ * 翻转链表
+ * 将1～n结点一个个插入到head结点后
  * h 1 2 3 4 5 6
      * h 1 2 3 4 5 6
      * h 2 1 3 4 5 6
@@ -135,11 +143,9 @@ int deleteP_link(LinkList llist, int i){
      * h 5 4 3 2 1 6
      * h 6 5 4 3 2 1
  */
-LinkList reverLinkList(LinkList llist)
-{
-    PNode tmp;
-    tmp = llist->link;//1
-    PNode q;
+LinkList reverLinkList(LinkList llist) {
+    PNode tmp,q;
+    tmp = llist->link;//第一个结点(llist是头结点)
     while(tmp->link!= NULL){
         q = tmp->link;//2
         tmp->link = q->link; //先把3和1接起
@@ -150,10 +156,24 @@ LinkList reverLinkList(LinkList llist)
      *其实while循环处理的是tmp->link,而不是tmp
      *所以6是可以正常插入的
      */
-
     return llist;
-
 }
+
+ //↑↓是一样的方法
+void reverse(LinkList llist){
+    PNode p, q;
+    p=llist->link;
+    llist->link=NULL;
+    while(p){
+        q=p;
+        //设置两个Node, q是要插入head后面的下一个结点, p为插入后剩下的链表的头结点
+        p=p->link;
+        // 把节点插入到头结点后面
+        q->link=llist->link;
+        llist->link=q;
+    }
+}
+
 
 // 插入排序---- 表排序
 // 移动次数为0，比较次数为O(n*n)
@@ -163,44 +183,55 @@ LinkList reverLinkList(LinkList llist)
  * 为什么不像之前那样,从后往前比呢? 因为单链表中, 像找前驱节点不容易啊
  * 为什么需要q, p 两个节点, 因为要把now节点插入,而插入的位置就在q,p中间,
  * q就指向now的父节点,p就是now的next节点,插入完后，q,p重新回到开头,下一个继续从头开始与now节点比较
- *
  */
 
-void ListSort(LinkList llist) {
-    Node *pre, *p, *q, *now, *head;
+void listSort(LinkList * plist) {
+    Node *now, *pre, *p, *q, *head; head=*plist;
     // pre指向已排序链表的最后一个节点,now指向下一个需要插入的节点
-    head = llist;
-    pre = head->link;
-    now = pre->link;
+    if (head->link == NULL || head->link->link== NULL)
+        return;  /* 为空链表或链表中只有一个结点 */
 
-    if(pre == NULL) return; //空表
-    if(now == NULL) return; //链表只有一个节点
-
-    while( now != NULL) {
+    pre = head->link; now = pre->link;
+    while (now != NULL) {
         // 每次插入新元素时,都把q,p重置回表头
-        q = head;
-        p = head->link;
-
+        q = head; p = head->link;
         // 用p从头开始与now做比较,q是p的前驱节点,
         // 所以q也跟now比较过了,当循环退出,now该插入的地方肯定就在qp间
         // 如果p与now相等,还进行了一次循环,所以,now还是在qp之间
-        while(p!=now && p->info <= now->info)
-            q = p; p = p->link;
-
+        while(p != now && p->info <= now->info ) {
+            q = p;  p = p->link;
+        } /* 本循环结束时，已经找到了now的插入位置 */
         // while退出,若是因p走到now那里(即已排序序列中找不到比now大的,
         // 那就把pre和now指向下一个就可以了,不需要插入
-        if(p == now) {
-            pre = pre->link;
-            now = pre->link;
-            continue;
-        }
-        // 把now插入到pq中间
-        pre->link = now->link;
-        q->link = now;
-        now->link = p;
 
-        now = pre->link;// now还是指向下个需要插入的节点
+        if (p == now) {                        /* now应放在原位置 */
+            pre = pre->link; now = pre->link; continue;
+        }
+
+        /* 使now记录脱链，将now记录插入链表中 */
+        pre->link= now->link; q->link= now; // 把now插入到pq中间
+        now->link= p; now = pre->link; // now还是指向下个需要插入的节点
     }
+}
+
+
+//FIXME
+//输出链表中倒数第K个结点
+/*
+ * 双指针联动，一个指针先跑K个节点，然后两个指针一起跑，
+ * 一个指针跑到尾节点时另一个指针恰好是倒数第K个结点
+ */
+DataType lastk(LinkList llist, int k){
+    int i = 0;
+    PNode q = llist;
+    PNode p = q->link;
+    while(p && i<k){ p = p->link; }//p跑到第k个结点了
+    while(p->link){
+        //这里需要q先跑, 顺序不同结果也是不同的
+        q = q->link;
+        p = p->link;
+    }
+    return q->info;
 }
 
 int main()
@@ -210,8 +241,7 @@ int main()
     PNode tmp;
     DataType data;
     cin>>data;
-    while(data)
-    {
+    while(data) {
         insertPost_link(llist, head, data);
         cin>>data;
     }
@@ -228,7 +258,7 @@ int main()
     tmp = locate_x(llist, key);
     cout<<tmp->info<<endl;
 
-    cout<<"insert data1 after_data2:\n";
+    cout<<"在input1后面插入input2:\n";
     DataType data1,data2;
     cin>>data1>>data2;
     tmp = locate_x(llist,data1);
@@ -242,21 +272,32 @@ int main()
     tmp2 = locatePre_link(llist, tmp);
     cout<<tmp2->info<<endl;
 
-    cout<<"deleteV_link,cin data\n";
+    cout<<"delete value,cin data\n";
     cin>>data;
-    deleteV_link(llist, data);
+    deleteValue(llist, data);
     showLinkList(llist);
 
-    cout<<"delete locate i,cin i\n";
+    cout<<"delete position,cin i\n";
     cin>>data;
-    deleteP_link(llist,data);
+    deletePosition(llist,data);
     showLinkList(llist);
 
     cout<<"reversal LinkList\n";
     LinkList tmp_link = reverLinkList(llist);
     showLinkList(tmp_link);
-    cout<<"sort LinkList\n";
-    ListSort(llist);
+
+    cout<<"reverse\n";
+    reverse(llist);
     showLinkList(llist);
+
+    cout<<"sort LinkList\n";
+    listSort(&llist);
+    showLinkList(llist);
+
+    cout<<"输入k,输出倒数第k个结点\n";
+    int k;
+    cin>>k;
+    cout<<lastk(llist, k)<<"\n";
+
     return 0;
 }

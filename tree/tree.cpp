@@ -17,17 +17,33 @@
  * typedef struck BiTNode{...}BiNode,*BiTree;
     BiTNode是BiTNode类型/别名，*BiTree是指向BiTNode类型的指针
     BiTNode a; BiTree a a是指针; BiTNode *a 相当于BiTree a;
- *
  * FIXME
  * 对于层次创建出来的二叉树好像有问题
-
-
+**********************************************************
+    printf("\n1. 先序遍历：\n");
+    printf("2. 先序遍历(非递归)：\n");
+    printf("3. 中序遍历：\n");
+    printf("4. 中序遍历(非递归)：\n");
+    printf("5. 后序遍历：\n");
+    printf("6. 后序遍历(非递归)：\n");
+    printf("7. 层次遍历：\n");
+    cout<<"8. 树的高/深度为："<<endl;
+    cout<<"9. 求二叉树第K层的节点个数"<<endl;
+    cout<<"10. 二叉树中叶子节点的个数"<<endl;
+    cout<<"11. 输出二叉树中叶子节点\n";
+    cout<<"12. 二叉树中节点的最大距离\n";
+    cout<<"13. 两结点最低公共祖先\n";
+    cout<<"14. 判断二叉树是不是平衡二叉树"<<endl;
+    cout<<"15. 翻转二叉树后中序遍历:"<<endl;
+    cout <<"\n释放树空间"<<endl<<endl;
+}
 **********************************************************/
 #include <iostream>
 #include <malloc.h>
 #include <math.h>
 #include <stack>
 #include <queue>
+#include <vector>
 #define abs(x)(x>0?x:(-x))
 #define maxsize 100
 using namespace std;
@@ -293,6 +309,26 @@ void swap_biTree(BiTree t)
         swap_biTree(t->rchild);
 
 }
+
+/*
+void PrintPath(BiTree root, vector<int> path,int length) { //打印两节点的路径
+    if (root) {
+        path.push_back(root->data);
+        if (!root->lchild && !root->rchild) //if (root->self==find)
+        {
+            for (int i=0; i<path.size();i++)
+                cout<<path[i]<<",";
+            cout<<endl;
+            return;
+        }
+        else {
+            PrintPath(root->lchild, path,length+1);
+            PrintPath(root->rchild, path,length+1);
+        }
+    }
+}
+*/
+
 //TODO
 bool isAVL(BiTree t, int & height) //判断二叉树是不是平衡二叉树
 {
